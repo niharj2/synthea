@@ -16,6 +16,7 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Practitioner;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.mitre.synthea.export.Exporter.ExporterRuntimeOptions;
 import org.mitre.synthea.helpers.Config;
 import org.mitre.synthea.helpers.RandomNumberGenerator;
 import org.mitre.synthea.world.agents.Clinician;
@@ -31,7 +32,7 @@ public abstract class FhirPractitionerExporterR4 {
   /**
    * Export the practitioner in FHIR R4 format.
    */
-  public static void export(RandomNumberGenerator rand, long stop) {
+  public static void export(RandomNumberGenerator rand, long stop, ExporterRuntimeOptions options) {
     if (Config.getAsBoolean("exporter.practitioner.fhir.export")) {
 
       Bundle bundle = new Bundle();
@@ -67,6 +68,8 @@ public abstract class FhirPractitionerExporterR4 {
           }
         }
       }
+
+      bundle = Exporter.applyFlexporterMappings(bundle, null, options);
 
       boolean ndjson = Config.getAsBoolean("exporter.fhir.bulk_data", false);
       File outputFolder = Exporter.getOutputFolder("fhir", null);

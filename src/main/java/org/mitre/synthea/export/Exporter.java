@@ -327,18 +327,7 @@ public abstract class Exporter {
       org.hl7.fhir.r4.model.Bundle bundle = FhirR4.convertToFHIR(person, stopTime);
 
       if (options.flexporterMappings != null) {
-        FlexporterJavascriptContext fjContext = null;
-
-        for (Mapping mapping : options.flexporterMappings) {
-          if (FhirPathUtils.appliesToBundle(bundle, mapping.applicability, mapping.variables)) {
-            if (fjContext == null) {
-              // only set this the first time it is actually used
-              // TODO: figure out how to silence the truffle warnings
-              fjContext = new FlexporterJavascriptContext();
-            }
-            bundle = Actions.applyMapping(bundle, mapping, person, fjContext);
-          }
-        }
+        bundle = applyFlexporterMappings(bundle, person, options);
       }
 
       IParser parser = FhirR4.getContext().newJsonParser();
@@ -464,6 +453,32 @@ public abstract class Exporter {
   }
 
   /**
+   * Apply all Flexporter mappings defined into the options to the given Bundle.
+   * NOTE: this returns a Bundle but most Flexporter transformations modify the Bundle in-place.
+   */
+  public static org.hl7.fhir.r4.model.Bundle applyFlexporterMappings(
+      org.hl7.fhir.r4.model.Bundle bundle,
+      Person person, ExporterRuntimeOptions options) {
+    if (options.flexporterMappings == null || options.flexporterMappings.isEmpty()) {
+      return bundle;
+    }
+
+    FlexporterJavascriptContext fjContext = null;
+
+    for (Mapping mapping : options.flexporterMappings) {
+      if (FhirPathUtils.appliesToBundle(bundle, mapping.applicability, mapping.variables)) {
+        if (fjContext == null) {
+          // only set this the first time it is actually used
+          // TODO: figure out how to silence the truffle warnings
+          fjContext = new FlexporterJavascriptContext();
+        }
+        bundle = Actions.applyMapping(bundle, mapping, person, fjContext);
+      }
+    }
+    return bundle;
+  }
+
+  /**
    * Write a new file with the given contents. Fails if the file already exists.
    * @param file Path to the new file.
    * @param contents The contents of the file.
@@ -564,13 +579,13 @@ public abstract class Exporter {
     }
 
     try {
-      HospitalExporterR4.export(generator.getRandomizer(), generator.stop);
+      HospitalExporterR4.export(generator.getRandomizer(), generator.stop, options);
     } catch (Exception e) {
       e.printStackTrace();
     }
 
     try {
-      FhirPractitionerExporterR4.export(generator.getRandomizer(), generator.stop);
+      FhirPractitionerExporterR4.export(generator.getRandomizer(), generator.stop, options);
     } catch (Exception e) {
       e.printStackTrace();
     }

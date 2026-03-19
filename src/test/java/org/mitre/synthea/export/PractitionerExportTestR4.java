@@ -59,7 +59,8 @@ public class PractitionerExportTestR4 {
     Provider.getProviderList().get(0).incrementEncounters(EncounterType.WELLNESS, 0);
     Provider.getProviderList().get(0).clinicianMap.get(
         ClinicianSpecialty.GENERAL_PRACTICE).get(0).incrementEncounters();
-    FhirPractitionerExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L);
+    FhirPractitionerExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L,
+        new Exporter.ExporterRuntimeOptions());
 
     File expectedExportFolder = tempOutputFolder.toPath().resolve("fhir").toFile();
     assertTrue(expectedExportFolder.exists() && expectedExportFolder.isDirectory());
@@ -107,7 +108,8 @@ public class PractitionerExportTestR4 {
     Provider.getProviderList().get(0).incrementEncounters(EncounterType.WELLNESS, 0);
     Provider.getProviderList().get(0).clinicianMap.get(
         ClinicianSpecialty.GENERAL_PRACTICE).get(0).incrementEncounters();
-    FhirPractitionerExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L);
+    FhirPractitionerExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L,
+        new Exporter.ExporterRuntimeOptions());
 
     File expectedExportFolder = tempOutputFolder.toPath().resolve("fhir").toFile();
     assertTrue(expectedExportFolder.exists() && expectedExportFolder.isDirectory());

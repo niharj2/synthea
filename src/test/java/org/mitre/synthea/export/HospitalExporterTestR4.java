@@ -52,7 +52,8 @@ public class HospitalExporterTestR4 {
     assertFalse(Provider.getProviderList().isEmpty());
 
     Provider.getProviderList().get(0).incrementEncounters(EncounterType.WELLNESS, 0);
-    HospitalExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L);
+    HospitalExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L,
+        new Exporter.ExporterRuntimeOptions());
 
     File expectedExportFolder = tempOutputFolder.toPath().resolve("fhir").toFile();
     assertTrue(expectedExportFolder.exists() && expectedExportFolder.isDirectory());
@@ -99,7 +100,8 @@ public class HospitalExporterTestR4 {
 
     Provider.getProviderList().get(0).incrementEncounters(EncounterType.WELLNESS, 0);
     Provider.getProviderList().get(0).attributes.put("bed_count", 1);
-    HospitalExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L);
+    HospitalExporterR4.export(new DefaultRandomNumberGenerator(0L), 0L,
+        new Exporter.ExporterRuntimeOptions());
 
     File expectedExportFolder = tempOutputFolder.toPath().resolve("fhir").toFile();
     assertTrue(expectedExportFolder.exists() && expectedExportFolder.isDirectory());

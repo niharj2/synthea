@@ -15,6 +15,7 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.mitre.synthea.export.Exporter.ExporterRuntimeOptions;
 import org.mitre.synthea.helpers.Config;
 import org.mitre.synthea.helpers.RandomNumberGenerator;
 import org.mitre.synthea.world.agents.Provider;
@@ -26,7 +27,7 @@ public abstract class HospitalExporterR4 {
   /**
    * Export the hospital in FHIR R4 format.
    */
-  public static void export(RandomNumberGenerator rand, long stop) {
+  public static void export(RandomNumberGenerator rand, long stop, ExporterRuntimeOptions options) {
     if (Config.getAsBoolean("exporter.hospital.fhir.export")) {
 
       Bundle bundle = new Bundle();
@@ -47,6 +48,8 @@ public abstract class HospitalExporterR4 {
       }
       // add in the patient's home location
       FhirR4.addPatientHomeLocation(bundle);
+
+      bundle = Exporter.applyFlexporterMappings(bundle, null, options);
 
       boolean ndjson = Config.getAsBoolean("exporter.fhir.bulk_data", false);
       File outputFolder = Exporter.getOutputFolder("fhir", null);
