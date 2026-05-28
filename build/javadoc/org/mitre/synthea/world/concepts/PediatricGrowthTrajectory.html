@@ -212,6 +212,15 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(long,long)" class="member-name-link">PediatricGrowthTrajectory</a><wbr>(long&nbsp;personSeed,
  long&nbsp;birthTime)</code></div>
 <div class="col-last even-row-color">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#%3Cinit%3E(long,long,java.lang.String)"><code>PediatricGrowthTrajectory(long, long, String)</code></a> instead for
+     sex-specific sampling which produces more realistic BMI distributions.</div>
+</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(long,long,java.lang.String)" class="member-name-link">PediatricGrowthTrajectory</a><wbr>(long&nbsp;personSeed,
+ long&nbsp;birthTime,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sex)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Starts a new pediatric growth trajectory.</div>
 </div>
 </div>
@@ -395,10 +404,32 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(long,long)">
+<section class="detail" id="&lt;init&gt;(long,long,java.lang.String)">
 <h3>PediatricGrowthTrajectory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PediatricGrowthTrajectory</span><wbr><span class="parameters">(long&nbsp;personSeed,
+ long&nbsp;birthTime,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sex)</span></div>
+<div class="block">Starts a new pediatric growth trajectory. Selects a start BMI between 2 and 3 years old by
+ pulling a weighted sample from NHANES, filtered by the individual's sex for more realistic
+ BMI distributions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>personSeed</code> - The person's seed to allow for repeatable randomization</dd>
+<dd><code>birthTime</code> - The time the individual was born in the simulation</dd>
+<dd><code>sex</code> - The sex of the individual ("M" or "F")</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(long,long)">
+<h3>PediatricGrowthTrajectory</h3>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="modifiers">public</span>&nbsp;<span class="element-name">PediatricGrowthTrajectory</span><wbr><span class="parameters">(long&nbsp;personSeed,
  long&nbsp;birthTime)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#%3Cinit%3E(long,long,java.lang.String)"><code>PediatricGrowthTrajectory(long, long, String)</code></a> instead for
+     sex-specific sampling which produces more realistic BMI distributions.</div>
+</div>
 <div class="block">Starts a new pediatric growth trajectory. Selects a start BMI between 2 and 3 years old by
  pulling a weighted sample from NHANES.</div>
 <dl class="notes">

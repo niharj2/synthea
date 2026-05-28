@@ -184,14 +184,19 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Load the NHANES samples from resources into an EnumeratedDistribution.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="NHANESSample.html" title="class in org.mitre.synthea.world.concepts">NHANESSample</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadSamples()" class="member-name-link">loadSamples</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.apache.commons.math3.distribution.EnumeratedDistribution&lt;<a href="NHANESSample.html" title="class in org.mitre.synthea.world.concepts">NHANESSample</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadDistributionBySex(int)" class="member-name-link">loadDistributionBySex</a><wbr>(int&nbsp;sexCode)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Load a sex-specific NHANES distribution.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="NHANESSample.html" title="class in org.mitre.synthea.world.concepts">NHANESSample</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadSamples()" class="member-name-link">loadSamples</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Load the NHANES samples from resources.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -327,6 +332,22 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the weighted distribution of NHANES Samples</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="loadDistributionBySex(int)">
+<h3>loadDistributionBySex</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.apache.commons.math3.distribution.EnumeratedDistribution&lt;<a href="NHANESSample.html" title="class in org.mitre.synthea.world.concepts">NHANESSample</a>&gt;</span>&nbsp;<span class="element-name">loadDistributionBySex</span><wbr><span class="parameters">(int&nbsp;sexCode)</span></div>
+<div class="block">Load a sex-specific NHANES distribution. Filters samples by the given sex code
+ and re-normalizes the probabilities so they sum to 1.0 within the filtered set.
+ This produces more realistic BMI distributions for pediatric growth trajectories
+ since male and female children have different BMI patterns.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>sexCode</code> - 1 for male, 2 for female (per NHANES convention)</dd>
+<dt>Returns:</dt>
+<dd>the weighted distribution of NHANES Samples filtered by sex</dd>
 </dl>
 </section>
 </li>
