@@ -570,23 +570,23 @@
           "distributions": [
             {
               "transition": "Death",
-              "distribution": 0.4
+              "distribution": 0.8
             },
             {
               "transition": "Inpatient Discharge decision",
-              "distribution": 0.6
+              "distribution": 0.2
             }
           ]
         },
         {
           "distributions": [
             {
-              "distribution": 0.02,
+              "distribution": 0.03,
               "transition": "Death"
             },
             {
               "transition": "Inpatient Discharge decision",
-              "distribution": 0.98
+              "distribution": 0.97
             }
           ]
         }
@@ -688,23 +688,23 @@
           "distributions": [
             {
               "transition": "Age 20-39",
-              "distribution": 0.0
+              "distribution": 0.002
             },
             {
               "transition": "Age 40-59",
-              "distribution": 0.005
+              "distribution": 0.017
             },
             {
               "transition": "Age 50-79",
-              "distribution": 0.055
+              "distribution": 0.048
             },
             {
               "transition": "Age 80+",
-              "distribution": 0.14
+              "distribution": 0.12
             },
             {
               "transition": "Terminal",
-              "distribution": 0.80
+              "distribution": 0.813
             }
           ]
         },
@@ -716,23 +716,23 @@
           "distributions": [
             {
               "transition": "Age 20-39",
-              "distribution": 0.0
+              "distribution": 0.003
             },
             {
               "transition": "Age 40-59",
-              "distribution": 0.004
+              "distribution": 0.012
             },
             {
               "transition": "Age 50-79",
-              "distribution": 0.04
+              "distribution": 0.069
             },
             {
               "transition": "Age 80+",
-              "distribution": 0.116
+              "distribution": 0.128
             },
             {
               "transition": "Terminal",
-              "distribution": 0.84
+              "distribution": 0.788
             }
           ]
         }
@@ -946,130 +946,6 @@
     },
     "CHF onset": {
       "type": "Simple",
-      "remarks": [
-        "HFpEF patients almost always carry several cardiometabolic comorbidities.",
-        "These gates assign them at realistic prevalences. Setting the attributes",
-        "(hypertension, diabetes, ckd) also makes Synthea generate matching vitals",
-        "and labs (high BP, high blood sugar, reduced kidney function)."
-      ],
-      "direct_transition": "Comorbid HTN gate"
-    },
-    "Comorbid HTN gate": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "transition": "Set HTN attribute",
-          "distribution": 0.8
-        },
-        {
-          "transition": "Comorbid AFib gate",
-          "distribution": 0.2
-        }
-      ]
-    },
-    "Set HTN attribute": {
-      "type": "SetAttribute",
-      "attribute": "hypertension",
-      "value": true,
-      "direct_transition": "HTN diagnosis"
-    },
-    "HTN diagnosis": {
-      "type": "ConditionOnset",
-      "target_encounter": "CHF initial workup encounter",
-      "codes": [
-        {
-          "system": "SNOMED-CT",
-          "code": "59621000",
-          "display": "Essential hypertension (disorder)"
-        }
-      ],
-      "direct_transition": "Comorbid AFib gate"
-    },
-    "Comorbid AFib gate": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "transition": "AFib diagnosis",
-          "distribution": 0.35
-        },
-        {
-          "transition": "Comorbid Diabetes gate",
-          "distribution": 0.65
-        }
-      ]
-    },
-    "AFib diagnosis": {
-      "type": "ConditionOnset",
-      "target_encounter": "CHF initial workup encounter",
-      "codes": [
-        {
-          "system": "SNOMED-CT",
-          "code": "49436004",
-          "display": "Atrial fibrillation (disorder)"
-        }
-      ],
-      "direct_transition": "Comorbid Diabetes gate"
-    },
-    "Comorbid Diabetes gate": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "transition": "Set Diabetes attribute",
-          "distribution": 0.4
-        },
-        {
-          "transition": "Comorbid CKD gate",
-          "distribution": 0.6
-        }
-      ]
-    },
-    "Set Diabetes attribute": {
-      "type": "SetAttribute",
-      "attribute": "diabetes",
-      "value": true,
-      "direct_transition": "Diabetes diagnosis"
-    },
-    "Diabetes diagnosis": {
-      "type": "ConditionOnset",
-      "target_encounter": "CHF initial workup encounter",
-      "codes": [
-        {
-          "system": "SNOMED-CT",
-          "code": "44054006",
-          "display": "Diabetes mellitus type 2 (disorder)"
-        }
-      ],
-      "direct_transition": "Comorbid CKD gate"
-    },
-    "Comorbid CKD gate": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "transition": "Set CKD attribute",
-          "distribution": 0.45
-        },
-        {
-          "transition": "Reset inpatient count",
-          "distribution": 0.55
-        }
-      ]
-    },
-    "Set CKD attribute": {
-      "type": "SetAttribute",
-      "attribute": "ckd",
-      "value": 3,
-      "direct_transition": "CKD diagnosis"
-    },
-    "CKD diagnosis": {
-      "type": "ConditionOnset",
-      "target_encounter": "CHF initial workup encounter",
-      "codes": [
-        {
-          "system": "SNOMED-CT",
-          "code": "433144002",
-          "display": "Chronic kidney disease stage 3 (disorder)"
-        }
-      ],
       "direct_transition": "Reset inpatient count"
     },
     "HFrEF": {
@@ -1099,7 +975,20 @@
     },
     "Determine Type": {
       "type": "Simple",
-      "direct_transition": "HFpEF"
+      "distributed_transition": [
+        {
+          "transition": "HFrEF",
+          "distribution": 0.39
+        },
+        {
+          "transition": "HFmEF",
+          "distribution": 0.13
+        },
+        {
+          "transition": "HFpEF",
+          "distribution": 0.48
+        }
+      ]
     },
     "LVEF HFpEF": {
       "type": "VitalSign",
@@ -1107,7 +996,7 @@
       "unit": "",
       "range": {
         "low": 50,
-        "high": 65
+        "high": 100
       },
       "distributed_transition": [
         {
