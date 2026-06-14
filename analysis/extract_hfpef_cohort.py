@@ -126,6 +126,16 @@ cohort["Creatinine"] = cohort["Creatinine_Serum"].fillna(cohort["Creatinine_Bloo
 cohort["Sodium"] = cohort["Sodium_Serum"].fillna(cohort["Sodium_Blood"])
 cohort["Potassium"] = cohort["Potassium_Serum"].fillna(cohort["Potassium_Blood"])
 
+# 7b. Drop physiologically impossible creatinine values.
+# Human serum creatinine essentially never exceeds ~15 mg/dL, even in end-stage
+# kidney disease; higher values are generator runaways and would skew analysis.
+MAX_PLAUSIBLE_CREATININE = 15.0
+n_before = len(cohort)
+cohort = cohort[
+    cohort["Creatinine"].isna() | (cohort["Creatinine"] <= MAX_PLAUSIBLE_CREATININE)
+].copy()
+print(f"Dropped {n_before - len(cohort)} patients with creatinine > {MAX_PLAUSIBLE_CREATININE} mg/dL")
+
 # 8. Final columns
 final_cols = [
     "PATIENT",
